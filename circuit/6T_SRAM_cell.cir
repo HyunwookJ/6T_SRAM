@@ -1,4 +1,4 @@
-* 6T SRAM Cell - check that the ckt have no error
+* 6T SRAM Cell - full cell netlist; transient check that stored data (Q=VDD) is held with WL=0
 
 * level-1 model for 6T SRAM study (temporary, education-level values)
 .model nmos nmos level=1 vto=0.5 kp=200u gamma=0.4 lambda=0.05 tox=4n cgso=3e-10 cgdo=3e-10 cj=1e-3 cjsw=2e-10

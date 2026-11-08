@@ -2,7 +2,7 @@
 
 .model nmos nmos level=1 vto=0.5 kp=200u gamma=0.4 lambda=0.05 tox=4n cgso=3e-10 cgdo=3e-10 cj=1e-3 cjsw=2e-10
 .model pmos pmos level=1 vto=-0.5 kp=80u gamma=0.4 lambda=0.05 tox=4n cgso=3e-10 cgdo=3e-10 cj=1e-3 cjsw=2e-10
-.param vdd=1.8 lmin=0.18u 
+.param vdd=VDD_VALUE lmin=0.18u 
 
 Vdd vdd 0 {vdd}
 Vwl wl 0 {vdd}
@@ -12,7 +12,7 @@ Vin in 0 0
 
 
 Mp1 out in vdd vdd pmos W=0.36u L={lmin}
-Mn1 out in GND GND nmos W=0.72u L={lmin}
+Mn1 out in GND GND nmos W=WPD L={lmin}
 Matl bl wl out GND nmos W=0.36u L={lmin}
 
 .dc Vin 0 {vdd} 0.002
@@ -20,9 +20,9 @@ Matl bl wl out GND nmos W=0.36u L={lmin}
 .control
 run
 set wr_vecnames
-wrdata vtc_read.txt v(out)
+wrdata READ_FILE v(out)
 alter vwl dc=0
 run
-wrdata vtc_hold.txt v(out)
+wrdata HOLD_FILE v(out)
 .endc
 .end

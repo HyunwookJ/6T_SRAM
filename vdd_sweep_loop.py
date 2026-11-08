@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 from curve_sum import snm
 from sim import run_ngspice
 
+W_AX = 0.36e-6
+BETA = 2
 vdds = [1.0, 1.2, 1.4, 1.6, 1.8, 2.0]
 
 snm_read = []
@@ -14,7 +16,7 @@ for vdd in vdds:
     hold_file = f"data/vdd/hold_{vdd}.txt"
 
     run_ngspice("circuit/vdd_template.cir",
-                {"VDD_VALUE": vdd, "READ_FILE": read_file, "HOLD_FILE": hold_file},
+                {"VDD_VALUE": vdd, "WPD": f"{BETA * W_AX:.3e}", "READ_FILE": read_file, "HOLD_FILE": hold_file},
                 out_files=[read_file, hold_file])
 
     v_in_r, v_out_r = np.loadtxt(read_file, unpack=True, skiprows=1)
@@ -31,7 +33,7 @@ for v, sr, sh in zip(vdds, snm_read, snm_hold):
 plt.plot(vdds, np.array(snm_hold) * 1000, "^--", color="tab:green", label="Hold SNM")
 plt.plot(vdds, np.array(snm_read) * 1000, "s--", color="tab:blue", label="Read SNM")
 
-plt.title("SNM vs VDD (β = 2)")
+plt.title(f"SNM vs VDD (β = {BETA})")
 plt.xlabel("VDD [V]")
 plt.ylabel("SNM [mV]")
 

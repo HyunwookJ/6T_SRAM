@@ -2,7 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from curve_sum import snm
+from sim import run_ngspice
 
+W_AX = 0.36e-6
+VDD = 1.8
+BETA = 2
+
+run_ngspice("circuit/half_cell.cir",
+            {"VDD_VALUE": VDD, "WPD": f"{BETA * W_AX:.3e}",
+             "READ_FILE": "data/vtc_read.txt", "HOLD_FILE": "data/vtc_hold.txt"},
+            out_files=["data/vtc_read.txt", "data/vtc_hold.txt"])
 
 v_in_h, v_out_h = np.loadtxt("data/vtc_hold.txt", unpack=True, skiprows=1)
 v_in_r, v_out_r = np.loadtxt("data/vtc_read.txt", unpack=True, skiprows=1)
@@ -25,7 +34,7 @@ plt.plot(v_out_r, v_in_r, color="tab:red")
 
 plt.legend()
 
-plt.title("6T SRAM Butterfly Curve (VDD = 1.8 V, β = 2)")
+plt.title(f"6T SRAM Butterfly Curve (VDD = {VDD} V, β = {BETA})")
 plt.xlabel("Q [V]")
 plt.ylabel("QB [V]")
 

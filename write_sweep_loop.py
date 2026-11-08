@@ -16,7 +16,7 @@ for gamma in gammas:
 
     # 1) trip 전압: BL을 1.8 -> 0V로 내리며 Q가 VDD/2 아래로 처음 내려가는 BL 전압
     run_ngspice("circuit/wr_template.cir",
-                {"WPU": wpu, "WRITE_FILE": out_file},
+                {"WPU": wpu, "VDD_VALUE": VDD, "WRITE_FILE": out_file},
                 out_files=[out_file])
 
     data = np.loadtxt(out_file, skiprows=1)
@@ -25,7 +25,8 @@ for gamma in gammas:
     v_trip.append(v_bl[flip[0]] if len(flip) else np.nan)
 
     # 2) 쓰기 시간: WL이 켜진 순간부터 Q가 VDD/2 아래로 내려갈 때까지
-    stdout = run_ngspice("circuit/wt_template.cir", {"WPU": wpu})
+    stdout = run_ngspice("circuit/wt_template.cir",
+                       {"WPU": wpu, "VDD_VALUE": VDD, "VDD_HALF": VDD / 2})
 
     m = re.search(r"twr\s*=\s*([-+0-9.eE]+)", stdout)
     t_write.append(float(m.group(1)) if m else np.nan)
@@ -47,6 +48,6 @@ ax2 = ax1.twinx()
 ax2.plot(gammas, np.array(t_write) * 1e12, "s--", color="tab:brown")
 ax2.set_ylabel("Write time [ps]", color="tab:brown")
 
-ax1.set_title("Writability vs γ Ratio (VDD = 1.8 V)")
+ax1.set_title(f"Writability vs γ Ratio (VDD = {VDD} V)")
 fig.tight_layout()
 fig.savefig("Fig/write_sweep.png")

@@ -2,25 +2,25 @@
 
 .model nmos nmos level=1 vto=0.5 kp=200u gamma=0.4 lambda=0.05 tox=4n cgso=3e-10 cgdo=3e-10 cj=1e-3 cjsw=2e-10
 .model pmos pmos level=1 vto=-0.5 kp=80u gamma=0.4 lambda=0.05 tox=4n cgso=3e-10 cgdo=3e-10 cj=1e-3 cjsw=2e-10
-.param vdd=1.8 lmin=0.18u
+.param vdd=VDD_VALUE lmin=0.18u ldiff=0.5u
 
 Vdd vdd 0 {vdd}
 Vwl wl 0 PULSE(0 {vdd} 0.1n 20p 20p 2n 4n)
 Vbl bl 0 0
 Vblb blb 0 {vdd}
 
-Mp1 q qb vdd vdd pmos W=WPU L={lmin}
-Mp2 qb q vdd vdd pmos W=WPU L={lmin}
-Mn1 q qb GND GND nmos W=0.72u L={lmin}
-Mn2 qb q GND GND nmos W=0.72u L={lmin}
-Matl bl wl q GND nmos W=0.36u L={lmin}
-Matr blb wl qb GND nmos W=0.36u L={lmin}
+Mp1 q qb vdd vdd pmos W=WPU L={lmin} AD={(WPU)*ldiff} AS={(WPU)*ldiff} PD={2*((WPU)+ldiff)} PS={2*((WPU)+ldiff)}
+Mp2 qb q vdd vdd pmos W=WPU L={lmin} AD={(WPU)*ldiff} AS={(WPU)*ldiff} PD={2*((WPU)+ldiff)} PS={2*((WPU)+ldiff)}
+Mn1 q qb GND GND nmos W=0.72u L={lmin} AD={(0.72u)*ldiff} AS={(0.72u)*ldiff} PD={2*((0.72u)+ldiff)} PS={2*((0.72u)+ldiff)}
+Mn2 qb q GND GND nmos W=0.72u L={lmin} AD={(0.72u)*ldiff} AS={(0.72u)*ldiff} PD={2*((0.72u)+ldiff)} PS={2*((0.72u)+ldiff)}
+Matl bl wl q GND nmos W=0.36u L={lmin} AD={(0.36u)*ldiff} AS={(0.36u)*ldiff} PD={2*((0.36u)+ldiff)} PS={2*((0.36u)+ldiff)}
+Matr blb wl qb GND nmos W=0.36u L={lmin} AD={(0.36u)*ldiff} AS={(0.36u)*ldiff} PD={2*((0.36u)+ldiff)} PS={2*((0.36u)+ldiff)}
 
 .ic v(q)={vdd} v(qb)=0
 .tran 1p 2n uic
 
 .control
 run
-meas tran twr trig v(wl) val=0.9 rise=1 targ v(q) val=0.9 fall=1
+meas tran twr trig v(wl) val=VDD_HALF rise=1 targ v(q) val=VDD_HALF fall=1
 .endc
 .end

@@ -4,6 +4,7 @@ from curve_sum import snm
 from sim import run_ngspice
 
 W_AX = 0.36e-6
+VDD = 1.8
 betas = [0.5, 1, 1.5, 2, 2.5, 3, 4]
 
 q_read = []
@@ -18,7 +19,7 @@ for beta in betas:
     hold_file = f"data/Beta/hold_{beta}.txt"
 
     run_ngspice("circuit/beta_template.cir",
-                {"WPD": f"{wpd:.3e}", "READ_FILE": read_file, "HOLD_FILE": hold_file},
+                {"VDD_VALUE": VDD, "WPD": f"{wpd:.3e}", "READ_FILE": read_file, "HOLD_FILE": hold_file},
                 out_files=[read_file, hold_file])
 
     d_r = np.loadtxt(read_file, skiprows=1)
@@ -51,7 +52,7 @@ ax2.legend()
 
 ax2.legend(loc="center right")
 
-ax1.set_title("Effect of β Ratio on Stability (VDD = 1.8 V)")
+ax1.set_title(f"Effect of β Ratio on Stability (VDD = {VDD} V)")
 
 plt.savefig("Fig/beta_sweep.png")
 
