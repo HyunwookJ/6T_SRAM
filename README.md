@@ -32,12 +32,32 @@ ngspice(level-1 모델, 0.18 µm)로 6T SRAM 셀의 안정성(SNM)과 쓰기 특
 
 ## 그래프
 
-**`butterfly_curve_snm.png`**: Hold SNM 661 mV, Read SNM 347 mV. Read에서는 access TR 때문에 '0' 쪽 레벨이 올라가 눈이 작아진다.
+**`butterfly_curve_snm.png`**
 
-**`vdd_sweep_2.png`**: VDD가 커질수록 SNM이 증가한다. Hold SNM은 VDD에 거의 비례해서 늘고, Read SNM은 완만하게 늘어 둘의 차이가 벌어진다.
+<img src="Fig/butterfly_curve_snm.png" width="480">
 
-**`beta_sweep.png`**: β가 커질수록 Read 중 Q 전압이 내려가고(빨강, 485 → 140 mV) Read SNM이 올라간다(파랑). Hold SNM은 거의 변하지 않고 약간 줄어든다.
+Hold SNM 661 mV, Read SNM 347 mV. Read에서는 access TR 때문에 '0' 쪽 레벨이 올라가 눈이 작아진다.
 
-**`beta_iread.png`**: β = 2를 1로 정규화한 Read SNM과 Read current. β를 키우면 둘 다 증가한다. β가 작은 구간에서 Read current가 더 가파르게 변한다.
+**`vdd_sweep_2.png`**
 
-**`write_sweep.png`**: γ가 커질수록(pull-up이 강해질수록) 쓰기가 어려워진다. trip 전압은 750 → 285 mV로 낮아지고, 쓰기 시간은 길어진다. 안정성(β)과 쓰기 용이성(γ) 사이에 trade-off가 있다.
+<img src="Fig/vdd_sweep_2.png" width="480">
+
+VDD가 커질수록 SNM이 증가한다. Hold SNM은 VDD에 거의 비례해서 늘고, Read SNM은 완만하게 늘어 둘의 차이가 벌어진다.
+
+**`beta_sweep.png`**
+
+<img src="Fig/beta_sweep.png" width="480">
+
+β가 커질수록 Read 중 Q 전압이 내려가고(빨강, 485 → 140 mV) Read SNM이 올라간다(파랑). Hold SNM은 거의 변하지 않고 약간 줄어든다.
+
+**`beta_iread.png`**
+
+<img src="Fig/beta_iread.png" width="480">
+
+β = 2를 1로 정규화한 Read SNM과 Read current. β를 키우면 둘 다 증가한다. β가 작은 구간에서 Read current가 더 가파르게 변한다.
+
+**`write_sweep.png`**
+
+<img src="Fig/write_sweep.png" width="480">
+
+γ가 커질수록(pull-up이 강해질수록) 쓰기가 어려워진다. trip 전압은 750 → 285 mV로 낮아지고, 쓰기 시간은 길어진다. 안정성(β)과 쓰기 용이성(γ) 사이에 trade-off가 있다.
