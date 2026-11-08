@@ -15,7 +15,7 @@ Mp1 out in vdd vdd pmos W=0.36u L={lmin}
 Mn1 out in GND GND nmos W=WPD L={lmin}
 Matl bl wl out GND nmos W=0.36u L={lmin}
 
-.dc Vin 0 {vdd} 0.01
+.dc Vin 0 {vdd} 0.002
 
 .control
 run

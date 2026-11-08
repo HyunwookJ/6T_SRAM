@@ -18,7 +18,7 @@ Matl bl wl q GND nmos W=0.36u L={lmin}
 Matr blb wl qb GND nmos W=0.36u L={lmin}
 
 .nodeset v(q)={vdd} v(qb)=0
-.dc Vbl 1.8 0 -0.002
+.dc Vbl {vdd} 0 -0.002
 
 .control
 run

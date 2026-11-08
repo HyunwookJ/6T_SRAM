@@ -1,12 +1,10 @@
-import subprocess
 import numpy as np
 import matplotlib.pyplot as plt
 from curve_sum import snm
+from sim import run_ngspice
 
 W_AX = 0.36e-6
 betas = [0.5, 1, 1.5, 2, 2.5, 3, 4]
-
-template = open("circuit/beta_template.cir").read()
 
 q_read = []
 snm_read = []
@@ -16,19 +14,16 @@ i_read = []
 for beta in betas:
 
     wpd = beta * W_AX
+    read_file = f"data/Beta/read_{beta}.txt"
+    hold_file = f"data/Beta/hold_{beta}.txt"
 
-    netlist = (template.replace("WPD", f"{wpd:.3e}")
-                       .replace("READ_FILE", f"data/Beta/read_{beta}.txt")
-                       .replace("HOLD_FILE", f"data/Beta/hold_{beta}.txt"))
-    
-    with open("tmp.cir", "w") as f:
-        f.write(netlist)
-    subprocess.run(["ngspice", "-b", "tmp.cir"], capture_output=True)
+    run_ngspice("circuit/beta_template.cir",
+                {"WPD": f"{wpd:.3e}", "READ_FILE": read_file, "HOLD_FILE": hold_file},
+                out_files=[read_file, hold_file])
 
-    d_r = np.loadtxt(f"data/Beta/read_{beta}.txt", skiprows=1)
+    d_r = np.loadtxt(read_file, skiprows=1)
     v_in_r, v_out_r = d_r[:, 0], d_r[:, 1]
-    v_in_h, v_out_h = np.loadtxt(f"data/Beta/hold_{beta}.txt", unpack=True, skiprows=1)
-    v_in_h, v_out_h = np.loadtxt(f"data/Beta/hold_{beta}.txt", unpack=True, skiprows=1)
+    v_in_h, v_out_h = np.loadtxt(hold_file, unpack=True, skiprows=1)
 
     q_read.append(v_out_r[-1])
     snm_read.append(snm(v_in_r, v_out_r)[0])
